@@ -5,23 +5,25 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from fastapi.middleware.cors import CORSMiddleware
 
+# ✅ First: create FastAPI app instance
+app = FastAPI()
+
+# ✅ Then: add middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Or restrict to your Expo Go's IP if needed
+    allow_origins=["*"],  # You can restrict to your frontend's URL/IP
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-
+# Database setup
 SQLALCHEMY_DATABASE_URL = "sqlite:///./tasks.db"
 engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
 models.Base.metadata.create_all(bind=engine)
-
 SessionLocal = sessionmaker(bind=engine)
 
-app = FastAPI()
-
+# Dependency
 def get_db():
     db = SessionLocal()
     try:
@@ -29,6 +31,7 @@ def get_db():
     finally:
         db.close()
 
+# Routes
 @app.get("/tasks", response_model=list[schemas.Task])
 def read_tasks(db: Session = Depends(get_db)):
     return crud.get_tasks(db)
