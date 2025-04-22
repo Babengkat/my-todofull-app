@@ -3,6 +3,16 @@ from sqlalchemy.orm import Session
 from . import models, crud, schemas
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Or restrict to your Expo Go's IP if needed
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///./tasks.db"
 engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
