@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, TextInput, FlatList, StyleSheet, Switch, TouchableOpacity, Modal, Pressable } from "react-native";
 import axios from "axios";
 
-const API_URL = 'https://my-todofull-app.onrender.com/tasks';
+const API_URL = "http://192.168.18.15:8000/tasks";
 
 export default function App() {
   const [tasks, setTasks] = useState([]);
